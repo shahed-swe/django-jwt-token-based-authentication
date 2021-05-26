@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import {login} from '../actions/auth';
+import './../App.css'
 
-const Login = ({login}) => {
+const Login = ({login, isAuthenticated}) => {
 
     const [formData, setFormData] = useState({
         email: '',
@@ -19,6 +20,9 @@ const Login = ({login}) => {
         login(email, password)
     }
     // if the user is authenticated we will redirect the user to home page
+    if(isAuthenticated){
+        return <Redirect to="/"/>
+    }
 
     return (
         <div className="container mt-5">
@@ -51,7 +55,7 @@ const Login = ({login}) => {
 
                 </div>
                 <div className="form-group">
-                    <button className="btn btn-primary" type="submit">Login</button>
+                    <button className="btn btn-primary for-login" type="submit">Login</button>
                 </div>
                 
             </form>
@@ -66,6 +70,6 @@ const Login = ({login}) => {
 };
 
 const mapStateToProps = state => ({
-    // is authenticated ?
+    isAuthenticated: state.auth.isAuthenticated
 })
-export default connect(null, {login})(Login);
+export default connect(mapStateToProps, {login})(Login);
