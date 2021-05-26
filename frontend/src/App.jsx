@@ -2,14 +2,15 @@ import React from 'react';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import Layout from './hocs/Layout';
 
-import Home from './containers/Home'
-import Activate from './containers/Activate'
-import Signup from './containers/Signup'
-import Login from './containers/Login'
-import ResetPassword from './containers/ResetPassword'
-import ResetPasswordConfirm from './containers/ResetPasswordConfirm'
-import  {Provider} from 'react-redux'
-import store from './store'
+import Home from './containers/Home';
+import Activate from './containers/Activate';
+import Signup from './containers/Signup';
+import Login from './containers/Login';
+import ResetPassword from './containers/ResetPassword';
+import ResetPasswordConfirm from './containers/ResetPasswordConfirm';
+import Error from './components/Error';
+import  {Provider} from 'react-redux';
+import store from './store';
 
 const App = () => (
     <Provider store={store}>
@@ -22,6 +23,7 @@ const App = () => (
                     <Route exact path="/activate/:uid/:token" component={Activate}/>
                     <Route exact path="/reset_password" component={ResetPassword}/>
                     <Route exact path="/password/reset/confirm/:uid/:token" component={ResetPasswordConfirm}/>
+                    <Route path="*" component={Error}/>
                 </Switch>
             </Layout>
         </Router>
