@@ -30,9 +30,6 @@ const Navbar = ({logout, isAuthenticated}) => {
         )
     };
 
-    // const logoutHandler = () => {
-    //     logout();
-    // };
 
     return(
         <div>
@@ -59,5 +56,6 @@ const Navbar = ({logout, isAuthenticated}) => {
 const mapStateToProps = state => ({
     isAuthenticated: state.auth.isAuthenticated
 });
+
 
 export default connect(mapStateToProps, {logout})(Navbar);
