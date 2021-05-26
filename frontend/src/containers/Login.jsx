@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
+import {login} from '../actions/auth';
 
-
-const Login = () => {
+const Login = ({login}) => {
 
     const [formData, setFormData] = useState({
         email: '',
@@ -16,19 +16,19 @@ const Login = () => {
 
     const onSubmit = e => {
         e.preventDefault();
-        // login(email, password)
+        login(email, password)
     }
     // if the user is authenticated we will redirect the user to home page
 
     return (
-        <div class="container mt-5">
+        <div className="container mt-5">
             <h1>Sign in</h1>
             <p>Sign in to your account</p>
-            <form onSubmit={e => onsubmit(e)}>
+            <form onSubmit={e => onSubmit(e)}>
                 <div className="form-group">
                     <label htmlFor="email">Email</label>
                     <input
-                        className = 'from-control'
+                        className = 'form-control'
                         type="email"
                         placeholder="Enter your email"
                         name="email"
@@ -37,7 +37,6 @@ const Login = () => {
                         required
                     />
                 </div>
-
                 <div className="form-group">
                     <label htmlFor="password">Password</label>
                     <input 
@@ -47,10 +46,14 @@ const Login = () => {
                         name="password"
                         value={password}
                         onChange={e => onChange(e)}
+                        required
                     />
 
                 </div>
-                <button class="btn btn-primary" type="submit">Login</button>
+                <div className="form-group">
+                    <button className="btn btn-primary" type="submit">Login</button>
+                </div>
+                
             </form>
             <p className="mt-3">
                 Don't have an account? <Link to="/signup">Signup</Link>
@@ -65,4 +68,4 @@ const Login = () => {
 const mapStateToProps = state => ({
     // is authenticated ?
 })
-export default connect(null)(Login);
+export default connect(null, {login})(Login);
