@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import {logout} from '../actions/auth';
 
 
-const Navbar = ({logout, isAuthenticated}) => {
+const Navbar = ({logout, isAuthenticated, user}) => {    
     const guestLinks = () => {
         return(
             <Fragment>
@@ -21,10 +21,14 @@ const Navbar = ({logout, isAuthenticated}) => {
 
 
     const authLinks = () => {
+        const name = (user != null) ? user.name : null;
         return(
             <Fragment>
                 <li className='nav-item'>
                     <Link className='nav-link' href="#!" onClick={logout}>Logout</Link>
+                </li>
+                <li className='nav-item'>
+                    <Link className='nav-link' href="#!">{name}</Link>
                 </li>
             </Fragment>
         )
@@ -54,7 +58,8 @@ const Navbar = ({logout, isAuthenticated}) => {
 }
 
 const mapStateToProps = state => ({
-    isAuthenticated: state.auth.isAuthenticated
+    isAuthenticated: state.auth.isAuthenticated,
+    user: state.auth.user,
 });
 
 

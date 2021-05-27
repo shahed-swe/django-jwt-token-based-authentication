@@ -10,8 +10,14 @@ import {
     PASSWORD_RESET_FAIL,
     PASSWORD_RESET_CONFIRM_SUCCESS,
     PASSWORD_RESET_CONFIRM_FAIL,
-    LOGOUT
+    SIGNUP_SUCCESS,
+    SIGNUP_FAIL,
+    ACTIVATION_SUCCESS,
+    ACTIVATION_FAILED,
+    LOGOUT,
 } from './types';
+
+
 
 
 
@@ -46,8 +52,7 @@ export const checkauthenticated = () => async dispatch => {
             type: AUTHENTICATED_FAILED 
         });
     }
-}
-
+};
 
 export const load_user = () => async dispatch =>{
     if (localStorage.getItem('access')){
@@ -79,6 +84,48 @@ export const load_user = () => async dispatch =>{
     }
 };
 
+export const signup = (name, email, password, re_password) => async dispatch =>  {
+    const config = {
+        headers:{
+            'Content-Type':'application/json',
+        }
+    };
+
+    const body = JSON.stringify({name, email, password, re_password});
+
+    try{
+        const res = await axios.post(`${process.env.REACT_APP_API_URL}/auth/users/`, body, config);
+        dispatch({
+            type: SIGNUP_SUCCESS,
+            payload: res.data
+        });
+    }catch(err){
+        dispatch({
+            type: SIGNUP_FAIL
+        });
+    }
+}
+
+export const verify = (uid, token) => async dispatch => {
+    const config = {
+        headers: {
+            'Content-Type':'application/json',
+        }
+    }
+    const body = JSON.stringify({uid, token});
+
+    try{
+        const res = await axios.post(`${process.env.REACT_APP_API_URL}/auth/users/activation/`, body, config);
+        dispatch({
+            type: ACTIVATION_SUCCESS,
+        });
+    }catch(err){
+        dispatch({
+            type: ACTIVATION_FAILED,
+        });
+    }
+}
+
 
 export const login = (email, password) => async dispatch =>{
     const config = {
@@ -87,7 +134,6 @@ export const login = (email, password) => async dispatch =>{
         }
     };
     const body = JSON.stringify({email, password});
-    console.log(body)
     try{
         const res = await axios.post(`${process.env.REACT_APP_API_URL}/auth/jwt/create/`, body, config);
         dispatch({
@@ -119,7 +165,7 @@ export const reset_password = (email) => async dispatch => {
             type: PASSWORD_RESET_FAIL
         });
     }
-}
+};
 
 export const reset_password_confirm = (uid, token, new_password, re_new_password) => async dispatch => {
     const config = {
@@ -140,11 +186,12 @@ export const reset_password_confirm = (uid, token, new_password, re_new_password
             type: PASSWORD_RESET_CONFIRM_FAIL
         });
     }
-}
+};
 
 
 export const logout = () => async dispatch => {
     dispatch({
         type: LOGOUT
     })
-}
+};
+
